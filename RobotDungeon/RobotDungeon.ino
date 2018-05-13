@@ -15,8 +15,8 @@ void setup() {
   // Activa la interrución por comparación
   TIMSK2 = (1 << OCIE2A);
 
-  uint8_t PinCNY70_1 = 10;
-  uint8_t PinCNY70_2 = 11;
+  uint8_t PinCNY70_1 = 24;
+  uint8_t PinCNY70_2 = 25;
   attachInterrupt(digitalPinToInterrupt(PinCNY70_1), sensor_1, FALLING);
   attachInterrupt(digitalPinToInterrupt(PinCNY70_2), sensor_2, FALLING);
 }

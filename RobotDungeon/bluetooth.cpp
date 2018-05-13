@@ -13,6 +13,16 @@ void bluetooth::close_conection() {
   // Comando AT de desconexión a bluetooth del PC
 }
 
+String bluetooth::listen_server() {
+  String leido = "";
+  if (hc05.available() > 0) {
+    while (hc05.available() > 0) {
+      leido+=(char)hc05.read();
+    }
+  }
+  return leido;
+}
+
 String bluetooth::request_server(String comando) {
   String data = "";
   hc05.println(comando);

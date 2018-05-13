@@ -31,10 +31,22 @@ void robot::play() {
     explore_libre();
   }
   else if (accion_global == CIEGO) {
-
+    explore_ciego();
+  }
+  else {
+    Serial.println("Error en la acción global");
   }
 }
 
+void robot::explore_ciego() {
+  if (contador >= 10) {
+    String comando = BT.listen_server();
+    if (comando != "") {
+      administra_comando(comando);
+    }
+    contador = 0;
+  }
+}
 
 void robot::explore_libre() {
   if (pasa_sensor1 == true && pasa_sensor2 == true) {
@@ -48,12 +60,16 @@ void robot::explore_libre() {
         actual_accion = RECOGIENDO;
         contador_recoger = 0;
       }
-      if (color == 'G') {
-        // Guardar mapa del color de la door
+      else if (color == 'G') {
+        // guarda_mapa(posX, posY, PUERTA);
+      }
+      else {
+        //guarda_mapa(posX, posY, PARED);
       }
     }
     else {
       pared_frente = false;
+      //guarda_mapa(posX, posY, CAMINO);
     }
     fase_volteo = 1;
     contador_volteo = 0;
@@ -72,12 +88,24 @@ void robot::explore_libre() {
 
       if (sensar_sonido() < MINDISTANCIA) { // TODO: revisar la distancia a la que queda de la pared aproximadamente :D
         fase_volteo++;
-        //Poner pared
+
+        char color = sensar_color();
+        if (color != 'N' && color != 'G') {
+          color_tengo = color;
+          actual_accion = RECOGIENDO;
+          contador_recoger = 0;
+        }
+        else if (color == 'G') {
+          // guarda_mapa(posX, posY, PUERTA);
+        }
+
+        //guarda_mapa(posX, posY, PARED);
       }
       else {
         actual_accion = ESTATICO;
         frenar();
         fase_volteo = 1;
+        //guarda_mapa(posX, posY, CAMINO);
       }
       contador_volteo = 0;
       // Leer sensores :v
@@ -164,6 +192,9 @@ void robot::administra_comando(String comando) {
   String tipo = comando.substring(0, 3);
   if (tipo == "Ten") {
     Serial.println("Lola");
+  }
+  else if (tipo == "") {
+
   }
   else { // comando=Lib o sin comando
     Serial.println("Lola");

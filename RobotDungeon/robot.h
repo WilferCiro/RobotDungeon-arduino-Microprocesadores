@@ -8,7 +8,27 @@
    ---------------------
    | Pin  | Descripción |
    ---------------------
-   |
+   |20    |Motor1a
+   |21    |Motor1b
+   |22    |Motor2a
+   |23    |Motor2b
+   |24    |sensor 1
+   |25    |sensor 2
+   |26    |s0
+   |27    |s1
+   |28    |s2
+   |29    |s3
+   |30    |out
+   |31    |Rx
+   |32    |Tx
+
+   PWM
+   |12    |motor 1 pwm
+   |11    |motor 2 pwm
+   |10    |Servo
+   |9     |Trigger
+   |8     |Echo
+   |7     |
 */
 
 #define CAMINO 1
@@ -33,32 +53,30 @@
 #define MINDISTANCIA 3
 class robot {
   private:
-
-
     uint8_t pin_motor1a = 20;
     uint8_t pin_motor1b = 21;
-    uint8_t pin_motor1_pwm = 20;
-    uint8_t pin_motor2_pwm = 20;
     uint8_t pin_motor2a = 22;
     uint8_t pin_motor2b = 23;
+    uint8_t pin_motor1_pwm = 12;
+    uint8_t pin_motor2_pwm = 11;
 
-    uint8_t pin_servo = 3;
+    uint8_t pin_servo = 10;
     Servo servo_obj;
     uint8_t servo_arriba = 0;
     uint8_t servo_abajo = 90;
 
-    uint8_t pin_sensor1 = A0;
-    uint8_t pin_sensor2 = A1;
+    uint8_t pin_sensor1 = 24;
+    uint8_t pin_sensor2 = 25;
 
 
-    uint8_t TriggerPin = 6;
-    uint8_t EchoPin = 5;
+    uint8_t TriggerPin = 9;
+    uint8_t EchoPin = 8;
 
-    uint8_t s0 = 8;
-    uint8_t s1 = 9;
-    uint8_t s2 = 12;
-    uint8_t s3 = 11;
-    uint8_t out = 10;
+    uint8_t s0 = 26;
+    uint8_t s1 = 27;
+    uint8_t s2 = 28;
+    uint8_t s3 = 29;
+    uint8_t out = 30;
 
     uint8_t mapa[13][13] = {
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -128,5 +146,6 @@ class robot {
     void actualiza_direccion();
 
     void calibrar_motores();
+    void explore_ciego();
 
 };
