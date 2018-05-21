@@ -162,8 +162,8 @@ void robot::explore_libre() {
 void robot::enviar_mapa() {
   for (uint8_t i = 0; i < 10; i++) {
     for (uint8_t a = 0; a < 10; a++) {
-      BT.server_send("Map-" +i+"-"+a+"-"+mapa[i][a]);
       delay(10);
+      BT.server_send("Map-" +i+"-"+a+"-"+mapa[i][a]);
     }
   }
 }
