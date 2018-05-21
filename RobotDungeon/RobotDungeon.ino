@@ -7,7 +7,6 @@
      cambiar guarda_mapa
      agregar camino_corto
      Hacer Maestro
-     Implementar bailar()
 */
 
 /*

@@ -96,6 +96,8 @@ class robot {
 
     String comando_bt = "";
 
+    void enviar_mapa();
+
   public:
     void andar(uint8_t);
     void frenar();

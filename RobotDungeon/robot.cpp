@@ -163,7 +163,7 @@ void robot::enviar_mapa() {
   for (uint8_t i = 0; i < 10; i++) {
     for (uint8_t a = 0; a < 10; a++) {
       delay(10);
-      BT.server_send("Map-" +i+"-"+a+"-"+mapa[i][a]);
+      BT.server_send("Map-" + (String)i + "-" + (String)a + "-" + (String)mapa[i][a]);
     }
   }
 }
@@ -247,7 +247,19 @@ void robot::administra_comando() {
     actual_accion = RECOGIENDO;
   }
   else if (tipo == "Bai") {
-    //bailar();
+    int nro = random(4);
+    if (nro == 0) {
+      levantar_garra();
+    }
+    else if (nro == 1) {
+      bajar_garra();
+    }
+    else if (nro == 2) {
+      voltear('D');
+    }
+    else if (nro == 3) {
+      voltear('I');
+    }
     actual_accion = BAILANDO;
   }
   else { // comando=Lib o sin comando
