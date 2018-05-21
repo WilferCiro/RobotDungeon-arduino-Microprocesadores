@@ -3,33 +3,7 @@
 #include <Servo.h>
 #include "servidor.h"
 #include "bluetooth.h"
-/*
-   PORT MAP
-   ---------------------
-   | Pin  | Descripción |
-   ---------------------
-   |20    |Motor1a
-   |21    |Motor1b
-   |22    |Motor2a
-   |23    |Motor2b
-   |24    |sensor 1
-   |25    |sensor 2
-   |26    |s0
-   |27    |s1
-   |28    |s2
-   |29    |s3
-   |30    |out
-   |31    |Rx
-   |32    |Tx
 
-   PWM
-   |12    |motor 1 pwm
-   |11    |motor 2 pwm
-   |10    |Servo
-   |9     |Trigger
-   |8     |Echo
-   |7     |
-*/
 
 #define CAMINO 1
 #define PARED 2
@@ -45,12 +19,16 @@
 #define ANDANDO 2
 #define RECOGIENDO 3
 #define ESTATICO 3
+#define BAILANDO 4
 
 #define LIBRE 1
 #define ESCLAVO 2
 #define CIEGO 3
 
-#define MINDISTANCIA 3
+#define MINDISTANCIA 7
+
+#define PWM_MOTOR1 240
+#define PWM_MOTOR2 255
 class robot {
   private:
     uint8_t pin_motor1a = 20;
@@ -78,20 +56,16 @@ class robot {
     uint8_t s3 = 29;
     uint8_t out = 30;
 
-    uint8_t mapa[13][13] = {
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    uint8_t mapa[9][9] = {
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     uint8_t posX1 = 0;
@@ -120,6 +94,8 @@ class robot {
 
     char color_tengo = 'N';
 
+    String comando_bt = "";
+
   public:
     void andar(uint8_t);
     void frenar();
@@ -136,11 +112,12 @@ class robot {
     char sensar_color();
     int sensar_sonido();
 
-    void guarda_mapa(uint8_t posx, uint8_t posy, char tipo);
+    void guarda_mapa(uint8_t posx, uint8_t posy, uint8_t tipo);
     
     void sensor_1();
     void sensor_2();
-    void administra_comando(String);
+    void administra_comando();
+    void termina_accion_esclavo();
     void aumenta_contadores();
 
     void actualiza_direccion();

@@ -1,7 +1,7 @@
 #include "bluetooth.h"
 
 void bluetooth::init() {
-  hc05.begin(9600);
+  Serial1.begin(9600);
   conectar_BT();
   close_conection();
 }
@@ -15,23 +15,27 @@ void bluetooth::close_conection() {
 
 String bluetooth::listen_server() {
   String leido = "";
-  if (hc05.available() > 0) {
-    while (hc05.available() > 0) {
-      leido+=(char)hc05.read();
+  if (Serial1.available() > 0) {
+    while (Serial1.available() > 0) {
+      leido += (char)Serial1.read();
     }
   }
   return leido;
 }
 
+void bluetooth::server_send(String comando) {
+  Serial1.println(comando);
+}
+
 String bluetooth::request_server(String comando) {
   String data = "";
-  hc05.println(comando);
+  Serial1.println(comando);
   unsigned long time = millis();
-  while (hc05.available() <= 0 && (time + 4000) > millis()) {
+  while (Serial1.available() <= 0 && (time + 4000) > millis()) {
     // esperar sin hacer nada :D
   }
-  while (hc05.available() > 0) {
-    char d = hc05.read();
+  while (Serial1.available() > 0) {
+    char d = Serial1.read();
     data += d;
   }
   return data;

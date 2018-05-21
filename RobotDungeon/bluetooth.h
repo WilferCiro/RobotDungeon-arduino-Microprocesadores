@@ -4,12 +4,12 @@
 
 class bluetooth {
   private:
-    SoftwareSerial hc05{31, 32}; // Rx y Tx del arduino
   public:
     void init();
     void play();
-    String request_server(String comando);
+    String request_server(String);
     void close_conection();
     void conectar_BT();
     String listen_server();
+    void server_send(String);
 };
