@@ -43,7 +43,6 @@ void robot::play() {
 }
 
 void robot::explore_ciego() {
-
   String comando = BT.listen_server();
   if (comando != "") {
     comando_bt = comando;
@@ -154,6 +153,17 @@ void robot::explore_libre() {
       accion_global = CIEGO;
       contador_recoger = 0;
       BT.server_send("Ten-" + color_tengo);
+      enviar_mapa();
+      actual_accion = ESTATICO;
+    }
+  }
+}
+
+void robot::enviar_mapa() {
+  for (uint8_t i = 0; i < 10; i++) {
+    for (uint8_t a = 0; a < 10; a++) {
+      BT.server_send("Map-" +i+"-"+a+"-"+mapa[i][a]);
+      delay(10);
     }
   }
 }
